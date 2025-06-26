@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia: Lidando com Ansiedade e Pânico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f1eb; /* Um bege suave e acolhedor */
+        }
+        .font-serif {
+            font-family: 'Lora', serif;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .breathing-circle {
+            animation: breathe 8s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.8); }
+            50% { transform: scale(1); }
+        }
+        .journal-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            margin-top: 0.5rem;
+            min-height: 80px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #374151; /* text-gray-700 */
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .journal-textarea:focus {
+            outline: none;
+            border-color: #3b82f6; /* border-blue-500 */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #1e40af;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Botão SOS Fixo -->
+    <!-- CORREÇÃO: Removido 'hidden' e 'md:block' para que o texto sempre apareça. Ajustado o padding. -->
+    <button onclick="openSosModal()" class="fixed bottom-5 right-5 z-50 bg-red-600 text-white font-bold py-3 px-5 rounded-full shadow-lg hover:bg-red-700 transition-transform transform hover:scale-110 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <span>Estou em Crise</span>
+    </button>
+
+    <!-- Modal SOS -->
+    <div id="sos-modal" class="fixed inset-0 bg-blue-900/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden" onclick="if(event.target === this) closeSosModal()">
+        <button onclick="closeSosModal()" class="absolute top-5 right-5 z-50 text-white opacity-70 hover:opacity-100 transition-opacity">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <div id="sos-content" class="text-white text-center max-w-2xl">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Você está seguro(a).</h2>
+            <p class="text-xl md:text-2xl mb-8">Concentre-se na sua respiração. Vamos fazer isto juntos.</p>
+            <div class="flex flex-col items-center">
+                <div class="relative w-40 h-40">
+                    <div class="absolute inset-0 bg-white/20 rounded-full"></div>
+                    <div class="absolute inset-2 bg-white/20 rounded-full breathing-circle"></div>
+                    <p id="breathing-instruction" class="absolute inset-0 flex items-center justify-center font-bold text-2xl"></p>
+                </div>
+            </div>
+            <p class="mt-8 text-lg">Se precisar, bata os pés no chão para se sentir presente. Você vai ficar bem.</p>
+        </div>
+    </div>
+
+
+    <!-- Header -->
+    <header class="text-center py-16 md:py-24 px-4 bg-white shadow-md">
+        <h1 class="font-serif text-4xl md:text-6xl font-bold gradient-text">Guia para Lidar com Ansiedade e Pânico</h1>
+        <p class="text-lg md:text-xl text-gray-600 mt-4 max-w-3xl mx-auto">Um espaço seguro para entender suas emoções e encontrar ferramentas práticas para cuidar do seu bem-estar.</p>
+    </header>
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        
+        <!-- Seção 1: Entendendo a Ansiedade -->
+        <section id="entendendo-ansiedade" class="mb-16">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Entendendo a Ansiedade</h2>
+            <div class="space-y-4 text-lg text-gray-700 leading-relaxed">
+                <p>A ansiedade é uma emoção humana natural. Em pequenas doses, ela pode ser útil: te deixa alerta, aguça o foco e te prepara para a ação. É a famosa resposta de "lutar ou fugir", um instinto de sobrevivência que todos nós temos.</p>
+                <p>No nosso dia a dia, essa sensação muitas vezes surge como uma preocupação com um prazo, um nervosismo antes de um encontro ou um alerta ao passar por um lugar desconhecido. Geralmente, ela desaparece assim que a situação é resolvida.</p>
+                <p class="p-4 bg-blue-50 border border-blue-200 rounded-lg"><strong>Quando se torna um problema?</strong> Quando esses sentimentos se tornam crónicos, intensos e difíceis de controlar, atrapalhando a sua vida diária. Se isso acontecer, lembre-se: é possível tratar, e procurar ajuda profissional é um ato de coragem.</p>
+            </div>
+        </section>
+
+        <!-- Seção 2: Ataque de Pânico -->
+        <section id="ataque-panico" class="mb-16">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">O que é um Ataque de Pânico?</h2>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed">É um sentimento repentino e intenso de medo ou desconforto que pode ser muito assustador. Os sintomas podem incluir:</p>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    <span>Coração acelerado</span>
+                </li>
+                <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    <span>Dificuldade para respirar</span>
+                </li>
+                <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 003 0m0 0V14m0-2.5v-6a1.5 1.5 0 013 0m0 0V14m0-2.5v-6a1.5 1.5 0 013 0m0 0v6.5m-9-3.5h.01" /></svg>
+                    <span>Formigamento ou tontura</span>
+                </li>
+                <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /></svg>
+                    <span>Ondas de calor ou frio</span>
+                </li>
+            </ul>
+            <p class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-lg"><strong>A boa notícia:</strong> Embora assustador, um ataque de pânico geralmente dura de 5 a 20 minutos e não lhe fará mal. Ele passa.</p>
+        </section>
+
+        <!-- Seção 3: Estratégias para Alívio (agora com o Diário Interativo) -->
+        <section id="estrategias" class="mb-16">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Estratégias Práticas para Alívio e Cuidado</h2>
+            <div class="space-y-8">
+                <!-- Exercícios de Respiração -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-serif text-2xl font-bold mb-3">1. Exercícios de Respiração</h3>
+                    <p class="text-gray-700 leading-relaxed">Respirações lentas e profundas ajudam a acalmar o sistema nervoso. Experimente a técnica 4-7-8: inspire contando até 4, segure o ar por 7 segundos e expire lentamente por 8 segundos. Repita algumas vezes.</p>
+                </div>
+                
+                <!-- Diário Interativo -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-serif text-2xl font-bold mb-3">2. Diário Interativo: Reformulando Pensamentos</h3>
+                    <p class="text-gray-700 mb-6 leading-relaxed">Use este espaço para processar seus pensamentos. Colocá-los "para fora" pode trazer clareza e alívio.</p>
+                    <div class="space-y-6">
+                        <div>
+                            <label for="journal1" class="font-bold text-gray-700">1. O que aconteceu que me deixou estressado(a) e/ou ansioso(a)?</label>
+                            <textarea id="journal1" class="journal-textarea" placeholder="Descreva a situação..."></textarea>
+                        </div>
+                        <div>
+                            <label for="journal2" class="font-bold text-gray-700">2. Que pensamentos prejudiciais estou a ter?</label>
+                            <textarea id="journal2" class="journal-textarea" placeholder="Ex: 'Eu nunca vou conseguir', 'Tudo dá errado para mim'..."></textarea>
+                        </div>
+                        <div>
+                            <label for="journal3" class="font-bold text-gray-700">3. Como esses pensamentos me fazem sentir?</label>
+                            <textarea id="journal3" class="journal-textarea" placeholder="Ex: Com medo, triste, sem esperança..."></textarea>
+                        </div>
+                        <div>
+                            <label for="journal4" class="font-bold text-gray-700">4. Que evidências apoiam esses pensamentos prejudiciais?</label>
+                            <textarea id="journal4" class="journal-textarea" placeholder="Tente ser o mais objetivo(a) possível..."></textarea>
+                        </div>
+                        <div>
+                            <label for="journal5" class="font-bold text-gray-700">5. Que evidências desafiam esses pensamentos prejudiciais?</label>
+                            <textarea id="journal5" class="journal-textarea" placeholder="Pense em experiências passadas, outras perspectivas..."></textarea>
+                        </div>
+                         <div>
+                            <label for="journal6" class="font-bold text-gray-700">6. Com base nas evidências, qual é a maneira mais útil, realista e/ou equilibrada de pensar sobre isto?</label>
+                            <textarea id="journal6" class="journal-textarea" placeholder="Escreva a sua nova perspectiva, mais compassiva..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movimente o Corpo -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-serif text-2xl font-bold mb-3">3. Movimente o Seu Corpo</h3>
+                    <p class="text-gray-700 leading-relaxed">A atividade física é uma ótima forma de reduzir o stress. Mas mesmo um movimento simples pode ajudar no momento da crise. Bater os pés no chão, por exemplo, ajuda a libertar a tensão e a te conectar com o presente (uma técnica de grounding).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 5: Conselheiro IA ✨ -->
+        <section id="conselheiro-ia" class="mb-16">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Converse com um Conselheiro IA Compassivo ✨</h2>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl">
+                 <p class="text-gray-700 mb-6 leading-relaxed text-lg">Às vezes, só precisamos de uma nova perspectiva. Descreva uma situação ou um pensamento que está a causar ansiedade, e a nossa IA, treinada com uma abordagem compassiva, oferecerá um insight para te ajudar a reformular essa questão.</p>
+                 <div>
+                    <label for="ia-input" class="font-bold text-gray-700">Descreva a sua situação aqui:</label>
+                    <textarea id="ia-input" class="journal-textarea" placeholder="Ex: 'Estou com medo de uma apresentação importante no trabalho e acho que vou falhar...'"></textarea>
+                </div>
+                <button id="ia-button" onclick="getGeminiReframing()" class="mt-4 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300 w-full flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <span>Pedir um Insight Compassivo</span>
+                </button>
+                <div id="ia-response-container" class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg min-h-[100px] hidden">
+                    <div id="ia-loading" class="flex items-center justify-center h-full hidden">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <p id="ia-response" class="text-gray-700 leading-relaxed whitespace-pre-wrap"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 6: Como Ajudar Alguém -->
+        <section id="como-ajudar" class="mb-16">
+             <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Como Ajudar Alguém em Crise</h2>
+             <p class="text-lg text-gray-700 mb-6 leading-relaxed">Se você presenciar alguém a ter um ataque de pânico, a sua calma pode ser a maior ajuda.</p>
+             <ul class="list-inside space-y-3 text-lg text-gray-700">
+                <li class="flex gap-3"><span class="text-blue-600 font-bold">1.</span> <span>Permaneça ao lado da pessoa e mantenha a calma. Diga que ela está segura e que você está ali para ajudar.</span></li>
+                <li class="flex gap-3"><span class="text-blue-600 font-bold">2.</span> <span>Pergunte como pode ajudar, sem fazer muitas perguntas. Leve-a para um lugar mais tranquilo, se possível.</span></li>
+                <li class="flex gap-3"><span class="text-blue-600 font-bold">3.</span> <span>Oriente-a a respirar lentamente consigo. Você pode respirar de forma exagerada para que ela te imite.</span></li>
+                <li class="flex gap-3"><span class="text-blue-600 font-bold">4.</span> <span>Depois que a crise passar, se ela quiser conversar, apenas ouça. Não ofereça conselhos, apenas um espaço de acolhimento.</span></li>
+            </ul>
+        </section>
+
+        <!-- Seção 7: Fontes de Informação -->
+        <section id="fontes">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Fontes e Referências</h2>
+            <div class="text-sm text-gray-500 bg-white p-6 rounded-lg shadow space-y-2">
+                <p>Anxiety and Depression Association of America, "Exercise for Stress and Anxiety".</p>
+                <p>BetterHealth, "Generalized anxiety disorder (GAD)."</p>
+                <p>Centre for Clinical Interventions, "What is anxiety?".</p>
+                <p>Cleveland Clinic, "Box Breathing Benefits and Techniques" & "How to Do the 4-7-8 Breathing Exercise".</p>
+                <p>Epilepsy Society, "Anxiety."</p>
+                <p>HealthDirect, "Anxiety."</p>
+                <p>HealthHub, "Anxiety Disorder or Just Anxious?".</p>
+                <p>Mayo Clinic, "Positive thinking: Stop negative self-talk to reduce stress".</p>
+                <p>Mental Health Foundation, "Anxiety" & "Panic attacks."</p>
+                <p>Mind, "What is a panic attack?".</p>
+                <p>NHS, "Anxiety, fear and panic" & "Breathing exercises for stress" & "Reframing unhelpful thoughts".</p>
+                <p>Optum Wellbeing, "Learn how to shift your thinking patterns to reduce stress and anxiety".</p>
+                <p>Singapore Association for Mental Health, "Anxiety Disorders."</p>
+                <p>University of California, "How we misunderstand anxiety and miss out on its benefits."</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-16 py-8 px-4 text-center">
+        <p class="font-serif text-xl mb-2">@vharagao.psi</p>
+        <p class="text-gray-400 max-w-3xl mx-auto">Este conteúdo é informativo e não substitui a avaliação de um profissional de saúde mental. Em caso de emergência, procure o serviço de saúde mais próximo ou ligue para o serviço de emergência local.</p>
+    </footer>
+
+    <script>
+        const sosModal = document.getElementById('sos-modal');
+        const breathingInstruction = document.getElementById('breathing-instruction');
+        let breathingTimeout; 
+
+        function openSosModal() {
+            sosModal.classList.remove('hidden');
+            sosModal.classList.add('flex');
+            startBreathingExercise();
+        }
+
+        function closeSosModal() {
+            sosModal.classList.add('hidden');
+            sosModal.classList.remove('flex');
+            clearTimeout(breathingTimeout); 
+        }
+        
+        function startBreathingExercise() {
+            const instructions = [
+                { text: "Inspire...", duration: 4000 },
+                { text: "Segure", duration: 7000 },
+                { text: "Expire...", duration: 8000 }
+            ];
+            let i = 0;
+            
+            clearTimeout(breathingTimeout); 
+
+            function cycle() {
+                breathingInstruction.textContent = instructions[i].text;
+                const currentDuration = instructions[i].duration;
+                i = (i + 1) % instructions.length;
+                
+                if (!sosModal.classList.contains('hidden')) {
+                    breathingTimeout = setTimeout(cycle, currentDuration);
+                }
+            }
+            
+            cycle();
+        }
+
+        // --- Lógica para a nova feature de IA ---
+        const iaButton = document.getElementById('ia-button');
+        const iaInput = document.getElementById('ia-input');
+        const iaResponseContainer = document.getElementById('ia-response-container');
+        const iaLoading = document.getElementById('ia-loading');
+        const iaResponse = document.getElementById('ia-response');
+
+        async function getGeminiReframing() {
+            const userInput = iaInput.value;
+            if (userInput.trim() === "") {
+                iaInput.classList.add('border-red-500');
+                return;
+            }
+            iaInput.classList.remove('border-red-500');
+
+            iaResponseContainer.classList.remove('hidden');
+            iaLoading.classList.remove('hidden');
+            iaResponse.classList.add('hidden');
+            iaButton.disabled = true;
+            iaButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const prompt = `Aja como um psicólogo compassivo e humano, com o tom do perfil @vharagao.psi. Ofereça uma nova perspectiva gentil, empoderadora e em tom de "provocação com compaixão" sobre a seguinte situação descrita por um utilizador que sente ansiedade: "${userInput}". A resposta deve ser curta (3-5 frases), acolhedora e focar em reformular o pensamento ou a situação de uma forma mais saudável e realista. Não comece com uma saudação.`;
+
+            try {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro na API: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                let text = "Não foi possível gerar um insight neste momento. Tente novamente mais tarde.";
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                    text = result.candidates[0].content.parts[0].text;
+                }
+                
+                iaResponse.textContent = text;
+
+            } catch (error) {
+                console.error('Erro ao chamar a Gemini API:', error);
+                iaResponse.textContent = "Ocorreu um erro ao comunicar com a IA. Por favor, verifique a sua conexão ou tente novamente.";
+            } finally {
+                iaLoading.classList.add('hidden');
+                iaResponse.classList.remove('hidden');
+                iaButton.disabled = false;
+                iaButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+    </script>
+</body>
+</html>
