@@ -62,7 +62,6 @@
 <body class="text-gray-800">
 
     <!-- Botão SOS Fixo -->
-    <!-- CORREÇÃO: Removido 'hidden' e 'md:block' para que o texto sempre apareça. Ajustado o padding. -->
     <button onclick="openSosModal()" class="fixed bottom-5 right-5 z-50 bg-red-600 text-white font-bold py-3 px-5 rounded-full shadow-lg hover:bg-red-700 transition-transform transform hover:scale-110 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -107,7 +106,8 @@
             <div class="space-y-4 text-lg text-gray-700 leading-relaxed">
                 <p>A ansiedade é uma emoção humana natural. Em pequenas doses, ela pode ser útil: te deixa alerta, aguça o foco e te prepara para a ação. É a famosa resposta de "lutar ou fugir", um instinto de sobrevivência que todos nós temos.</p>
                 <p>No nosso dia a dia, essa sensação muitas vezes surge como uma preocupação com um prazo, um nervosismo antes de um encontro ou um alerta ao passar por um lugar desconhecido. Geralmente, ela desaparece assim que a situação é resolvida.</p>
-                <p class="p-4 bg-blue-50 border border-blue-200 rounded-lg"><strong>Quando se torna um problema?</strong> Quando esses sentimentos se tornam crónicos, intensos e difíceis de controlar, atrapalhando a sua vida diária. Se isso acontecer, lembre-se: é possível tratar, e procurar ajuda profissional é um ato de coragem.</p>
+                <!-- CORREÇÃO 1 FEITA AQUI -->
+                <p class="p-4 bg-blue-50 border border-blue-200 rounded-lg"><strong>Quando se torna um problema?</strong> Quando esses sentimentos se tornam crônicos, intensos e difíceis de controlar, atrapalhando a sua vida diária. Se isso acontecer, lembre-se: é possível tratar, e procurar ajuda profissional é um ato de coragem.</p>
             </div>
         </section>
 
@@ -217,7 +217,7 @@
                 <li class="flex gap-3"><span class="text-blue-600 font-bold">2.</span> <span>Pergunte como pode ajudar, sem fazer muitas perguntas. Leve-a para um lugar mais tranquilo, se possível.</span></li>
                 <li class="flex gap-3"><span class="text-blue-600 font-bold">3.</span> <span>Oriente-a a respirar lentamente consigo. Você pode respirar de forma exagerada para que ela te imite.</span></li>
                 <li class="flex gap-3"><span class="text-blue-600 font-bold">4.</span> <span>Depois que a crise passar, se ela quiser conversar, apenas ouça. Não ofereça conselhos, apenas um espaço de acolhimento.</span></li>
-            </ul>
+             </ul>
         </section>
 
         <!-- Seção 7: Fontes de Informação -->
@@ -315,8 +315,9 @@
             try {
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                // CORREÇÃO 2 FEITA AQUI
+                const apiKey = "AIzaSyBzC4vOPT__8aYzV8O_CPM6LkBkdJyR_pM";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
