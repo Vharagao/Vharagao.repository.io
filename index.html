@@ -9,74 +9,63 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Estilos Globais e Animações */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f1eb; /* Um bege suave e acolhedor */
+            background-color: #f4f1eb;
         }
-        .font-serif {
-            font-family: 'Lora', serif;
-        }
+        .font-serif { font-family: 'Lora', serif; }
         .gradient-text {
             background: linear-gradient(45deg, #3b82f6, #1e40af);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .breathing-circle {
-            animation: breathe 8s ease-in-out infinite;
-        }
+        .breathing-circle { animation: breathe 8s ease-in-out infinite; }
         @keyframes breathe {
             0%, 100% { transform: scale(0.8); }
             50% { transform: scale(1); }
         }
-        .journal-textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db; /* border-gray-300 */
-            border-radius: 0.5rem;
-            background-color: #ffffff;
-            margin-top: 0.5rem;
-            min-height: 80px;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #374151; /* text-gray-700 */
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .journal-textarea:focus {
-            outline: none;
-            border-color: #3b82f6; /* border-blue-500 */
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
-        }
         .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #1e40af;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            animation: spin 1s linear infinite;
+            border: 4px solid rgba(0, 0, 0, 0.1); border-left-color: #1e40af; border-radius: 50%;
+            width: 32px; height: 32px; animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .fade-in-section {
+            opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+        .nav-button:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="text-gray-700">
+
+    <!-- Menu de Navegação Fixo -->
+    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" class="font-serif text-xl font-bold text-gray-800">@vharagao.psi</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#entendendo-ansiedade" class="text-gray-600 hover:text-blue-600 transition-colors">Entender</a>
+                    <a href="#estrategias" class="text-gray-600 hover:text-blue-600 transition-colors">Estratégias</a>
+                    <a href="#conselheiro-ia" class="text-gray-600 hover:text-blue-600 transition-colors">Conselheiro IA</a>
+                    <a href="#como-ajudar" class="text-gray-600 hover:text-blue-600 transition-colors">Como Ajudar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <!-- Botão SOS Fixo -->
     <button onclick="openSosModal()" class="fixed bottom-5 right-5 z-50 bg-red-600 text-white font-bold py-3 px-5 rounded-full shadow-lg hover:bg-red-700 transition-transform transform hover:scale-110 flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
         <span>Estou em Crise</span>
     </button>
 
     <!-- Modal SOS -->
     <div id="sos-modal" class="fixed inset-0 bg-blue-900/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden" onclick="if(event.target === this) closeSosModal()">
         <button onclick="closeSosModal()" class="absolute top-5 right-5 z-50 text-white opacity-70 hover:opacity-100 transition-opacity">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
-
         <div id="sos-content" class="text-white text-center max-w-2xl">
             <h2 class="font-serif text-4xl md:text-5xl font-bold mb-4">Você está seguro(a).</h2>
             <p class="text-xl md:text-2xl mb-8">Concentre-se na sua respiração. Vamos fazer isto juntos.</p>
@@ -91,7 +80,6 @@
         </div>
     </div>
 
-
     <!-- Header -->
     <header class="text-center py-16 md:py-24 px-4 bg-white shadow-md">
         <h1 class="font-serif text-4xl md:text-6xl font-bold gradient-text">Guia para Lidar com Ansiedade e Pânico</h1>
@@ -101,99 +89,91 @@
     <div class="max-w-4xl mx-auto p-4 md:p-8">
         
         <!-- Seção 1: Entendendo a Ansiedade -->
-        <section id="entendendo-ansiedade" class="mb-16">
-            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Entendendo a Ansiedade</h2>
-            <div class="space-y-4 text-lg text-gray-700 leading-relaxed">
+        <section id="entendendo-ansiedade" class="mb-16 fade-in-section">
+            <div class="flex items-center gap-4 mb-6 border-b-2 border-blue-200 pb-2">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900">Entendendo a Ansiedade</h2>
+                <!-- NOVO: Botão de Áudio -->
+                <button class="audio-button text-blue-600 hover:text-blue-800" data-text-source="entendendo-ansiedade-text">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+            <div id="entendendo-ansiedade-text" class="space-y-4 text-lg leading-relaxed">
                 <p>A ansiedade é uma emoção humana natural. Em pequenas doses, ela pode ser útil: te deixa alerta, aguça o foco e te prepara para a ação. É a famosa resposta de "lutar ou fugir", um instinto de sobrevivência que todos nós temos.</p>
                 <p>No nosso dia a dia, essa sensação muitas vezes surge como uma preocupação com um prazo, um nervosismo antes de um encontro ou um alerta ao passar por um lugar desconhecido. Geralmente, ela desaparece assim que a situação é resolvida.</p>
-                <!-- CORREÇÃO 1 FEITA AQUI -->
                 <p class="p-4 bg-blue-50 border border-blue-200 rounded-lg"><strong>Quando se torna um problema?</strong> Quando esses sentimentos se tornam crônicos, intensos e difíceis de controlar, atrapalhando a sua vida diária. Se isso acontecer, lembre-se: é possível tratar, e procurar ajuda profissional é um ato de coragem.</p>
             </div>
         </section>
 
         <!-- Seção 2: Ataque de Pânico -->
-        <section id="ataque-panico" class="mb-16">
-            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">O que é um Ataque de Pânico?</h2>
-            <p class="text-lg text-gray-700 mb-6 leading-relaxed">É um sentimento repentino e intenso de medo ou desconforto que pode ser muito assustador. Os sintomas podem incluir:</p>
+        <section id="ataque-panico" class="mb-16 fade-in-section">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-b-2 border-blue-200 pb-2">O que é um Ataque de Pânico?</h2>
+            <p class="text-lg mb-6 leading-relaxed">É um sentimento repentino e intenso de medo ou desconforto que pode ser muito assustador. Os sintomas podem incluir:</p>
             <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                    <span>Coração acelerado</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    <span class="text-gray-800">Coração acelerado</span>
                 </li>
                 <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                    <span>Dificuldade para respirar</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    <span class="text-gray-800">Dificuldade para respirar</span>
                 </li>
                 <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 003 0m0 0V14m0-2.5v-6a1.5 1.5 0 013 0m0 0V14m0-2.5v-6a1.5 1.5 0 013 0m0 0v6.5m-9-3.5h.01" /></svg>
-                    <span>Formigamento ou tontura</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 003 0m0 0V14m0-2.5v-6a1.5 1.5 0 013 0m0 0V14m0-2.5v-6a1.5 1.5 0 013 0m0 0v6.5m-9-3.5h.01" /></svg>
+                    <span class="text-gray-800">Formigamento ou tontura</span>
                 </li>
                 <li class="bg-white p-4 rounded-lg shadow flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /></svg>
-                    <span>Ondas de calor ou frio</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /></svg>
+                    <span class="text-gray-800">Ondas de calor ou frio</span>
                 </li>
             </ul>
             <p class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-lg"><strong>A boa notícia:</strong> Embora assustador, um ataque de pânico geralmente dura de 5 a 20 minutos e não lhe fará mal. Ele passa.</p>
         </section>
 
-        <!-- Seção 3: Estratégias para Alívio (agora com o Diário Interativo) -->
-        <section id="estrategias" class="mb-16">
-            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Estratégias Práticas para Alívio e Cuidado</h2>
+        <!-- Seção 3: Estratégias para Alívio -->
+        <section id="estrategias" class="mb-16 fade-in-section">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-b-2 border-blue-200 pb-2">Estratégias Práticas</h2>
             <div class="space-y-8">
-                <!-- Exercícios de Respiração -->
+                
+                <!-- NOVO: Caixa de Aterramento -->
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="font-serif text-2xl font-bold mb-3">1. Exercícios de Respiração</h3>
-                    <p class="text-gray-700 leading-relaxed">Respirações lentas e profundas ajudam a acalmar o sistema nervoso. Experimente a técnica 4-7-8: inspire contando até 4, segure o ar por 7 segundos e expire lentamente por 8 segundos. Repita algumas vezes.</p>
+                    <div class="flex items-center gap-4 mb-3">
+                        <h3 class="font-serif text-2xl font-bold text-gray-900">1. Caixa de Aterramento (5-4-3-2-1)</h3>
+                         <button class="audio-button text-blue-600 hover:text-blue-800" data-text-source="grounding-box-text">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </div>
+                    <div id="grounding-box-text" class="hidden">Use esta técnica para se conectar com o presente e acalmar os seus sentidos. Complete cada passo.</div>
+                    <p class="mb-4 leading-relaxed">Use esta técnica para se conectar com o presente e acalmar os seus sentidos. Complete cada passo.</p>
+                    <div id="grounding-box" class="space-y-4"></div>
                 </div>
                 
-                <!-- Diário Interativo -->
+                <!-- Diário Terapêutico -->
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="font-serif text-2xl font-bold mb-3">2. Diário Interativo: Reformulando Pensamentos</h3>
-                    <p class="text-gray-700 mb-6 leading-relaxed">Use este espaço para processar seus pensamentos. Colocá-los "para fora" pode trazer clareza e alívio.</p>
-                    <div class="space-y-6">
-                        <div>
-                            <label for="journal1" class="font-bold text-gray-700">1. O que aconteceu que me deixou estressado(a) e/ou ansioso(a)?</label>
-                            <textarea id="journal1" class="journal-textarea" placeholder="Descreva a situação..."></textarea>
-                        </div>
-                        <div>
-                            <label for="journal2" class="font-bold text-gray-700">2. Que pensamentos prejudiciais estou a ter?</label>
-                            <textarea id="journal2" class="journal-textarea" placeholder="Ex: 'Eu nunca vou conseguir', 'Tudo dá errado para mim'..."></textarea>
-                        </div>
-                        <div>
-                            <label for="journal3" class="font-bold text-gray-700">3. Como esses pensamentos me fazem sentir?</label>
-                            <textarea id="journal3" class="journal-textarea" placeholder="Ex: Com medo, triste, sem esperança..."></textarea>
-                        </div>
-                        <div>
-                            <label for="journal4" class="font-bold text-gray-700">4. Que evidências apoiam esses pensamentos prejudiciais?</label>
-                            <textarea id="journal4" class="journal-textarea" placeholder="Tente ser o mais objetivo(a) possível..."></textarea>
-                        </div>
-                        <div>
-                            <label for="journal5" class="font-bold text-gray-700">5. Que evidências desafiam esses pensamentos prejudiciais?</label>
-                            <textarea id="journal5" class="journal-textarea" placeholder="Pense em experiências passadas, outras perspectivas..."></textarea>
-                        </div>
-                         <div>
-                            <label for="journal6" class="font-bold text-gray-700">6. Com base nas evidências, qual é a maneira mais útil, realista e/ou equilibrada de pensar sobre isto?</label>
-                            <textarea id="journal6" class="journal-textarea" placeholder="Escreva a sua nova perspectiva, mais compassiva..."></textarea>
-                        </div>
+                    <h3 class="font-serif text-2xl font-bold mb-3 text-gray-900">2. Diário Terapêutico Pessoal</h3>
+                    <p class="mb-6 leading-relaxed">Use este espaço para processar seus pensamentos. Suas notas são salvas com a data, diretamente no seu navegador, e só você pode vê-las. Navegue pelos dias para acompanhar o seu progresso.</p>
+                    <div class="flex items-center justify-between mb-4 bg-gray-100 p-2 rounded-lg">
+                        <button onclick="changeDate(-1)" class="nav-button bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors">Anterior</button>
+                        <h4 id="journal-date" class="font-bold text-lg text-center"></h4>
+                        <button id="next-date-button" onclick="changeDate(1)" class="nav-button bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors">Próximo</button>
                     </div>
-                </div>
-
-                <!-- Movimente o Corpo -->
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="font-serif text-2xl font-bold mb-3">3. Movimente o Seu Corpo</h3>
-                    <p class="text-gray-700 leading-relaxed">A atividade física é uma ótima forma de reduzir o stress. Mas mesmo um movimento simples pode ajudar no momento da crise. Bater os pés no chão, por exemplo, ajuda a libertar a tensão e a te conectar com o presente (uma técnica de grounding).</p>
+                    <div id="journal-container" class="space-y-6"></div>
+                    <div id="journal-feedback" class="text-green-600 font-medium mt-4 h-6"></div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-2">
+                        <button onclick="saveJournal()" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300 flex-1">Salvar Anotações do Dia</button>
+                        <button onclick="clearJournalForDate()" class="bg-gray-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-300 flex-1">Limpar Anotações do Dia</button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Seção 5: Conselheiro IA ✨ -->
-        <section id="conselheiro-ia" class="mb-16">
-            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Converse com um Conselheiro IA Compassivo ✨</h2>
-            <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl">
-                 <p class="text-gray-700 mb-6 leading-relaxed text-lg">Às vezes, só precisamos de uma nova perspectiva. Descreva uma situação ou um pensamento que está a causar ansiedade, e a nossa IA, treinada com uma abordagem compassiva, oferecerá um insight para te ajudar a reformular essa questão.</p>
+        <!-- Seção Conselheiro IA -->
+        <section id="conselheiro-ia" class="mb-16 fade-in-section">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-b-2 border-blue-200 pb-2">Conselheiro IA Compassivo ✨</h2>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow">
+                 <p class="mb-6 leading-relaxed text-lg">Às vezes, só precisamos de uma nova perspectiva. Descreva uma situação ou um pensamento que está a causar ansiedade, e a nossa IA oferecerá um insight para te ajudar a reformular essa questão.</p>
                  <div>
-                    <label for="ia-input" class="font-bold text-gray-700">Descreva a sua situação aqui:</label>
-                    <textarea id="ia-input" class="journal-textarea" placeholder="Ex: 'Estou com medo de uma apresentação importante no trabalho e acho que vou falhar...'"></textarea>
+                    <label for="ia-input" class="font-bold text-gray-800">Descreva a sua situação aqui:</label>
+                    <textarea id="ia-input" class="w-full p-2 border border-gray-300 rounded-md mt-1" placeholder="Ex: 'Estou com medo de uma apresentação importante no trabalho e acho que vou falhar...'"></textarea>
                 </div>
                 <button id="ia-button" onclick="getGeminiReframing()" class="mt-4 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300 w-full flex items-center justify-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
@@ -203,44 +183,22 @@
                     <div id="ia-loading" class="flex items-center justify-center h-full hidden">
                         <div class="loading-spinner"></div>
                     </div>
-                    <p id="ia-response" class="text-gray-700 leading-relaxed whitespace-pre-wrap"></p>
+                    <p id="ia-response" class="leading-relaxed whitespace-pre-wrap"></p>
                 </div>
             </div>
         </section>
 
-        <!-- Seção 6: Como Ajudar Alguém -->
-        <section id="como-ajudar" class="mb-16">
-             <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Como Ajudar Alguém em Crise</h2>
-             <p class="text-lg text-gray-700 mb-6 leading-relaxed">Se você presenciar alguém a ter um ataque de pânico, a sua calma pode ser a maior ajuda.</p>
-             <ul class="list-inside space-y-3 text-lg text-gray-700">
+        <!-- Seção Como Ajudar Alguém -->
+        <section id="como-ajudar" class="mb-16 fade-in-section">
+             <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-b-2 border-blue-200 pb-2">Como Ajudar Alguém em Crise</h2>
+             <p class="text-lg mb-6 leading-relaxed">Se você presenciar alguém a ter um ataque de pânico, a sua calma pode ser a maior ajuda.</p>
+             <ul class="list-inside space-y-3 text-lg">
                 <li class="flex gap-3"><span class="text-blue-600 font-bold">1.</span> <span>Permaneça ao lado da pessoa e mantenha a calma. Diga que ela está segura e que você está ali para ajudar.</span></li>
                 <li class="flex gap-3"><span class="text-blue-600 font-bold">2.</span> <span>Pergunte como pode ajudar, sem fazer muitas perguntas. Leve-a para um lugar mais tranquilo, se possível.</span></li>
                 <li class="flex gap-3"><span class="text-blue-600 font-bold">3.</span> <span>Oriente-a a respirar lentamente consigo. Você pode respirar de forma exagerada para que ela te imite.</span></li>
                 <li class="flex gap-3"><span class="text-blue-600 font-bold">4.</span> <span>Depois que a crise passar, se ela quiser conversar, apenas ouça. Não ofereça conselhos, apenas um espaço de acolhimento.</span></li>
              </ul>
         </section>
-
-        <!-- Seção 7: Fontes de Informação -->
-        <section id="fontes">
-            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-6 border-b-2 border-blue-200 pb-2">Fontes e Referências</h2>
-            <div class="text-sm text-gray-500 bg-white p-6 rounded-lg shadow space-y-2">
-                <p>Anxiety and Depression Association of America, "Exercise for Stress and Anxiety".</p>
-                <p>BetterHealth, "Generalized anxiety disorder (GAD)."</p>
-                <p>Centre for Clinical Interventions, "What is anxiety?".</p>
-                <p>Cleveland Clinic, "Box Breathing Benefits and Techniques" & "How to Do the 4-7-8 Breathing Exercise".</p>
-                <p>Epilepsy Society, "Anxiety."</p>
-                <p>HealthDirect, "Anxiety."</p>
-                <p>HealthHub, "Anxiety Disorder or Just Anxious?".</p>
-                <p>Mayo Clinic, "Positive thinking: Stop negative self-talk to reduce stress".</p>
-                <p>Mental Health Foundation, "Anxiety" & "Panic attacks."</p>
-                <p>Mind, "What is a panic attack?".</p>
-                <p>NHS, "Anxiety, fear and panic" & "Breathing exercises for stress" & "Reframing unhelpful thoughts".</p>
-                <p>Optum Wellbeing, "Learn how to shift your thinking patterns to reduce stress and anxiety".</p>
-                <p>Singapore Association for Mental Health, "Anxiety Disorders."</p>
-                <p>University of California, "How we misunderstand anxiety and miss out on its benefits."</p>
-            </div>
-        </section>
-
     </div>
 
     <!-- Footer -->
@@ -250,22 +208,20 @@
     </footer>
 
     <script>
+        // --- Lógica do Modal SOS ---
         const sosModal = document.getElementById('sos-modal');
         const breathingInstruction = document.getElementById('breathing-instruction');
         let breathingTimeout; 
-
         function openSosModal() {
             sosModal.classList.remove('hidden');
             sosModal.classList.add('flex');
             startBreathingExercise();
         }
-
         function closeSosModal() {
             sosModal.classList.add('hidden');
             sosModal.classList.remove('flex');
             clearTimeout(breathingTimeout); 
         }
-        
         function startBreathingExercise() {
             const instructions = [
                 { text: "Inspire...", duration: 4000 },
@@ -273,71 +229,201 @@
                 { text: "Expire...", duration: 8000 }
             ];
             let i = 0;
-            
             clearTimeout(breathingTimeout); 
-
             function cycle() {
                 breathingInstruction.textContent = instructions[i].text;
                 const currentDuration = instructions[i].duration;
                 i = (i + 1) % instructions.length;
-                
                 if (!sosModal.classList.contains('hidden')) {
                     breathingTimeout = setTimeout(cycle, currentDuration);
                 }
             }
-            
             cycle();
         }
 
-        // --- Lógica para a nova feature de IA ---
+        // --- Animações de Scroll ---
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } 
+                else { entry.target.classList.remove('is-visible'); }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => { observer.observe(section); });
+
+        // --- Lógica do Diário Terapêutico ---
+        let currentDate = new Date();
+        const journalContainer = document.getElementById('journal-container');
+        const journalFeedback = document.getElementById('journal-feedback');
+        const journalDateEl = document.getElementById('journal-date');
+        const nextDateButton = document.getElementById('next-date-button');
+        const journalQuestions = [
+            { id: 'journal1', label: "1. O que aconteceu que me deixou estressado(a) e/ou ansioso(a)?", placeholder: "Descreva a situação..." },
+            { id: 'journal2', label: "2. Que pensamentos prejudiciais estou a ter?", placeholder: "Ex: 'Eu nunca vou conseguir', 'Tudo dá errado para mim'..." },
+            { id: 'journal3', label: "3. Como esses pensamentos me fazem sentir?", placeholder: "Ex: Com medo, triste, sem esperança..." },
+            { id: 'journal4', label: "4. Que evidências apoiam esses pensamentos prejudiciais?", placeholder: "Tente ser o mais objetivo(a) possível..." },
+            { id: 'journal5', label: "5. Que evidências desafiam esses pensamentos prejudiciais?", placeholder: "Pense em experiências passadas, outras perspectivas..." },
+            { id: 'journal6', label: "6. Com base nas evidências, qual é a maneira mais útil, realista e/ou equilibrada de pensar sobre isto?", placeholder: "Escreva a sua nova perspectiva, mais compassiva..." }
+        ];
+        function createJournalFields() {
+            journalQuestions.forEach(q => {
+                const div = document.createElement('div');
+                const label = document.createElement('label');
+                label.htmlFor = q.id;
+                label.className = 'font-bold text-gray-800';
+                label.textContent = q.label;
+                const textarea = document.createElement('textarea');
+                textarea.id = q.id;
+                textarea.className = 'w-full p-2 border border-gray-300 rounded-md mt-1';
+                textarea.placeholder = q.placeholder;
+                div.appendChild(label);
+                div.appendChild(textarea);
+                journalContainer.appendChild(div);
+            });
+        }
+        function getFormattedDate(date) { return date.toISOString().split('T')[0]; }
+        function updateDateDisplay() {
+            const today = new Date(); today.setHours(0,0,0,0);
+            const dateString = getFormattedDate(currentDate);
+            const todayString = getFormattedDate(today);
+            if (dateString === todayString) { journalDateEl.textContent = "Hoje"; } 
+            else { journalDateEl.textContent = currentDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });}
+            nextDateButton.disabled = getFormattedDate(currentDate) >= todayString;
+        }
+        function saveJournal() {
+            const allEntries = JSON.parse(localStorage.getItem('journalEntries')) || {};
+            const dateKey = getFormattedDate(currentDate);
+            const currentDayEntries = {};
+            journalQuestions.forEach(q => { currentDayEntries[q.id] = document.getElementById(q.id).value; });
+            allEntries[dateKey] = currentDayEntries;
+            localStorage.setItem('journalEntries', JSON.stringify(allEntries));
+            journalFeedback.textContent = 'Suas anotações foram salvas com sucesso!';
+            setTimeout(() => { journalFeedback.textContent = ''; }, 3000);
+        }
+        function loadJournalForDate(date) {
+            const allEntries = JSON.parse(localStorage.getItem('journalEntries')) || {};
+            const dateKey = getFormattedDate(date);
+            const savedEntries = allEntries[dateKey] || {};
+            journalQuestions.forEach(q => { document.getElementById(q.id).value = savedEntries[q.id] || ''; });
+            updateDateDisplay();
+        }
+        function clearJournalForDate() {
+            const dateKey = getFormattedDate(currentDate);
+            if (confirm(`Tem a certeza que deseja apagar as anotações do dia ${currentDate.toLocaleDateString('pt-BR')}? Esta ação não pode ser desfeita.`)) {
+                const allEntries = JSON.parse(localStorage.getItem('journalEntries')) || {};
+                delete allEntries[dateKey];
+                localStorage.setItem('journalEntries', JSON.stringify(allEntries));
+                loadJournalForDate(currentDate); 
+                journalFeedback.textContent = 'Anotações do dia apagadas.';
+                setTimeout(() => { journalFeedback.textContent = ''; }, 3000);
+            }
+        }
+        function changeDate(offset) {
+            currentDate.setDate(currentDate.getDate() + offset);
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            if (currentDate > today) { currentDate.setTime(today.getTime()); }
+            loadJournalForDate(currentDate);
+        }
+
+        // --- Lógica dos Guias de Áudio ---
+        const audioButtons = document.querySelectorAll('.audio-button');
+        let currentUtterance = null;
+        audioButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const sourceId = button.dataset.textSource;
+                const sourceElement = document.getElementById(sourceId);
+                const textToSpeak = sourceElement.innerText || sourceElement.textContent;
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                    if(currentUtterance && currentUtterance.text === textToSpeak) {
+                       currentUtterance = null;
+                       return;
+                    }
+                }
+                currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
+                currentUtterance.lang = 'pt-BR';
+                currentUtterance.rate = 0.9;
+                currentUtterance.onend = () => { currentUtterance = null; };
+                speechSynthesis.speak(currentUtterance);
+            });
+        });
+
+        // --- Lógica da Caixa de Aterramento ---
+        const groundingBox = document.getElementById('grounding-box');
+        let currentGroundingStep = 0;
+        const groundingSteps = [
+            { label: "5 coisas que você pode VER:", placeholder: "Ex: uma cadeira, uma janela, a cor da parede..." },
+            { label: "4 coisas que você pode TOCAR:", placeholder: "Ex: a textura da sua roupa, a mesa, o seu cabelo..." },
+            { label: "3 coisas que você pode OUVIR:", placeholder: "Ex: o som do computador, pássaros, sua respiração..." },
+            { label: "2 coisas que você pode CHEIRAR:", placeholder: "Ex: o cheiro do café, um perfume, o ar fresco..." },
+            { label: "1 coisa que você pode PROVAR:", placeholder: "Ex: o gosto de água, um pedaço de chocolate, sua saliva..." }
+        ];
+        function renderGroundingStep() {
+            groundingBox.innerHTML = '';
+            const step = groundingSteps[currentGroundingStep];
+            const div = document.createElement('div');
+            div.className = 'fade-in-section is-visible';
+            const label = document.createElement('label');
+            label.className = 'font-bold text-gray-800';
+            label.textContent = step.label;
+            const textarea = document.createElement('textarea');
+            textarea.className = 'w-full p-2 border border-gray-300 rounded-md mt-1';
+            textarea.placeholder = step.placeholder;
+            textarea.rows = 2;
+            const button = document.createElement('button');
+            button.className = 'mt-2 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition-colors w-full';
+            if (currentGroundingStep < groundingSteps.length - 1) {
+                button.textContent = 'Próximo Passo';
+                button.onclick = () => {
+                    currentGroundingStep++;
+                    renderGroundingStep();
+                };
+            } else {
+                button.textContent = 'Finalizar Exercício';
+                button.onclick = () => {
+                   groundingBox.innerHTML = '<p class="text-center font-bold text-lg text-green-600 p-4">Muito bem! Exercício concluído. Respire fundo.</p>';
+                   setTimeout(() => {
+                       currentGroundingStep = 0;
+                       renderGroundingStep();
+                   }, 4000);
+                };
+            }
+            div.appendChild(label);
+            div.appendChild(textarea);
+            div.appendChild(button);
+            groundingBox.appendChild(div);
+            textarea.focus();
+        }
+
+        // --- Conselheiro IA ---
         const iaButton = document.getElementById('ia-button');
         const iaInput = document.getElementById('ia-input');
         const iaResponseContainer = document.getElementById('ia-response-container');
         const iaLoading = document.getElementById('ia-loading');
         const iaResponse = document.getElementById('ia-response');
-
         async function getGeminiReframing() {
             const userInput = iaInput.value;
-            if (userInput.trim() === "") {
-                iaInput.classList.add('border-red-500');
-                return;
-            }
+            if (userInput.trim() === "") { iaInput.classList.add('border-red-500'); return; }
             iaInput.classList.remove('border-red-500');
-
             iaResponseContainer.classList.remove('hidden');
             iaLoading.classList.remove('hidden');
             iaResponse.classList.add('hidden');
             iaButton.disabled = true;
             iaButton.classList.add('opacity-50', 'cursor-not-allowed');
-
             const prompt = `Aja como um psicólogo compassivo e humano, com o tom do perfil @vharagao.psi. Ofereça uma nova perspectiva gentil, empoderadora e em tom de "provocação com compaixão" sobre a seguinte situação descrita por um utilizador que sente ansiedade: "${userInput}". A resposta deve ser curta (3-5 frases), acolhedora e focar em reformular o pensamento ou a situação de uma forma mais saudável e realista. Não comece com uma saudação.`;
-
             try {
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                // CORREÇÃO 2 FEITA AQUI
                 const apiKey = "AIzaSyBzC4vOPT__8aYzV8O_CPM6LkBkdJyR_pM";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Erro na API: ${response.statusText}`);
-                }
-
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) { throw new Error(`Erro na API: ${response.statusText}`); }
                 const result = await response.json();
-                
                 let text = "Não foi possível gerar um insight neste momento. Tente novamente mais tarde.";
                 if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                     text = result.candidates[0].content.parts[0].text;
                 }
-                
                 iaResponse.textContent = text;
-
             } catch (error) {
                 console.error('Erro ao chamar a Gemini API:', error);
                 iaResponse.textContent = "Ocorreu um erro ao comunicar com a IA. Por favor, verifique a sua conexão ou tente novamente.";
@@ -348,6 +434,13 @@
                 iaButton.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
+        
+        // --- Inicialização da Página ---
+        document.addEventListener('DOMContentLoaded', () => {
+            createJournalFields();
+            loadJournalForDate(currentDate);
+            renderGroundingStep();
+        });
     </script>
 </body>
 </html>
