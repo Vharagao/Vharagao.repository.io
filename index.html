@@ -92,7 +92,6 @@
         <section id="entendendo-ansiedade" class="mb-16 fade-in-section">
             <div class="flex items-center gap-4 mb-6 border-b-2 border-blue-200 pb-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900">Entendendo a Ansiedade</h2>
-                <!-- NOVO: Botão de Áudio -->
                 <button class="audio-button text-blue-600 hover:text-blue-800" data-text-source="entendendo-ansiedade-text">
                     <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
                 </button>
@@ -134,7 +133,6 @@
             <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-b-2 border-blue-200 pb-2">Estratégias Práticas</h2>
             <div class="space-y-8">
                 
-                <!-- NOVO: Caixa de Aterramento -->
                 <div class="bg-white p-6 rounded-lg shadow">
                     <div class="flex items-center gap-4 mb-3">
                         <h3 class="font-serif text-2xl font-bold text-gray-900">1. Caixa de Aterramento (5-4-3-2-1)</h3>
@@ -147,7 +145,6 @@
                     <div id="grounding-box" class="space-y-4"></div>
                 </div>
                 
-                <!-- Diário Terapêutico -->
                 <div class="bg-white p-6 rounded-lg shadow">
                     <h3 class="font-serif text-2xl font-bold mb-3 text-gray-900">2. Diário Terapêutico Pessoal</h3>
                     <p class="mb-6 leading-relaxed">Use este espaço para processar seus pensamentos. Suas notas são salvas com a data, diretamente no seu navegador, e só você pode vê-las. Navegue pelos dias para acompanhar o seu progresso.</p>
@@ -208,6 +205,12 @@
     </footer>
 
     <script>
+        // --- CORREÇÃO: Força o scroll para o topo ao carregar a página ---
+        window.history.scrollRestoration = 'manual';
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+
         // --- Lógica do Modal SOS ---
         const sosModal = document.getElementById('sos-modal');
         const breathingInstruction = document.getElementById('breathing-instruction');
